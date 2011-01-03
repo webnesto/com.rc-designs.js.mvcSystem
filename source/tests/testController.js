@@ -59,13 +59,9 @@ ns.testController = function (className, classDef){
 				expect(controller.isPrepped()).toBeTruthy();
 			});
 			
-			it('should have a view', function(){
-				expect(controller.view()).toBeInstanceOf(mvc.View);
-			});
-			
 			it('should have a model', function(){
 				expect(controller.model()).toBeInstanceOf(mvc.Model);
-			})
+			});
 			
 			describe("prepared", function(){
 				

@@ -14,10 +14,10 @@ ns.[replace]Controller = (function () {
 			}
 			 */ //OPTIONAL
 		;
-		
-		_this.View = _root.views.[replace]View;
 
 		//_this.Model = _root.models.[replace]Model; //OPTIONAL
+		
+		_this.View = _root.NAME + ".[replace]";
 	
 		return _this;
 	}

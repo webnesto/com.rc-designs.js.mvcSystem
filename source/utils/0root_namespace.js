@@ -1,4 +1,7 @@
 //Ensure ns exists
-var ns = utils = {};
+var
+	utils = utils || {}
+,	ns = utils
+;
 ns.NAME = "utils";
 root = ns;

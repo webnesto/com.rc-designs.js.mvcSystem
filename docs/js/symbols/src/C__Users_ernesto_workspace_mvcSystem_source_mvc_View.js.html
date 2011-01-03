@@ -14,230 +14,230 @@
 <span class='line'>  7</span>  * @requires utils.imageLoader
 <span class='line'>  8</span>  * @requires utils.sizzle
 <span class='line'>  9</span>  */</span><span class="WHIT">
-<span class='line'> 10</span> 
-<span class='line'> 11</span> </span><span class="NAME">ns.View</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 12</span> </span><span class="WHIT">	</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">_ns</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">ns</span><span class="WHIT">
-<span class='line'> 13</span> </span><span class="WHIT">		</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">_root</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">_root</span><span class="WHIT">
-<span class='line'> 14</span> </span><span class="WHIT">	</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 15</span> </span><span class="WHIT">	
-<span class='line'> 16</span> 	</span><span class="COMM">//#ifdef debug</span><span class="WHIT">
-<span class='line'> 17</span> </span><span class="WHIT">	</span><span class="NAME">debug.log</span><span class="PUNC">(</span><span class="STRN">"loading ns:"</span><span class="PUNC">+</span><span class="NAME">ns.NAME</span><span class="PUNC">+</span><span class="STRN">".View"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 18</span> </span><span class="WHIT">	</span><span class="COMM">//#endif</span><span class="WHIT">
-<span class='line'> 19</span> </span><span class="WHIT">	</span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">_gsub</span><span class="PUNC">(</span><span class="NAME">str</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">pattern</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">replacement</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 20</span> </span><span class="WHIT">		</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">result</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">''</span><span class="WHIT">
-<span class='line'> 21</span> </span><span class="WHIT">			</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">source</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">str</span><span class="WHIT">
-<span class='line'> 22</span> </span><span class="WHIT">			</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">match</span><span class="WHIT">
-<span class='line'> 23</span> </span><span class="WHIT">		</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 24</span> </span><span class="WHIT">		</span><span class="NAME">replacement</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">_prepareReplacement</span><span class="PUNC">(</span><span class="NAME">replacement</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 10</span> </span><span class="COMM">/*
+<span class='line'> 11</span> ns.View = (function(){
+<span class='line'> 12</span> 	var _ns = ns
+<span class='line'> 13</span> 		, _root = _root
+<span class='line'> 14</span> 	;
+<span class='line'> 15</span> 	
+<span class='line'> 16</span> 	//#ifdef debug
+<span class='line'> 17</span> 	debug.log("loading ns:"+ns.NAME+".View");
+<span class='line'> 18</span> 	//#endif
+<span class='line'> 19</span> 	function _gsub(str, pattern, replacement) {
+<span class='line'> 20</span> 		var result = ''
+<span class='line'> 21</span> 			, source = str
+<span class='line'> 22</span> 			, match
+<span class='line'> 23</span> 		;
+<span class='line'> 24</span> 		replacement = _prepareReplacement(replacement);
 <span class='line'> 25</span> 
-<span class='line'> 26</span> </span><span class="WHIT">		</span><span class="KEYW">while</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">source.length</span><span class="WHIT"> </span><span class="PUNC">></span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 27</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">match</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">source.match</span><span class="PUNC">(</span><span class="NAME">pattern</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 28</span> </span><span class="WHIT">				</span><span class="NAME">result</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">source.slice</span><span class="PUNC">(</span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">match.index</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 29</span> </span><span class="WHIT">				</span><span class="NAME">result</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">replacement</span><span class="PUNC">(</span><span class="NAME">match</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="STRN">''</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 30</span> </span><span class="WHIT">				</span><span class="NAME">source</span><span class="WHIT">  </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">source.slice</span><span class="PUNC">(</span><span class="NAME">match.index</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">match</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">length</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 31</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 32</span> </span><span class="WHIT">				</span><span class="NAME">result</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">source</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">source</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">''</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 33</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 34</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 35</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">result</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 36</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 37</span> </span><span class="WHIT">	
-<span class='line'> 38</span> 	</span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">_prepareReplacement</span><span class="PUNC">(</span><span class="NAME">replacement</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 39</span> </span><span class="WHIT">		</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="PUNC">(</span><span class="NAME">replacement</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="STRN">"function"</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 40</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">replacement</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 41</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 42</span> </span><span class="WHIT">		</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">template</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">View</span><span class="PUNC">(</span><span class="NAME">replacement</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 43</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">match</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">template.evaluate</span><span class="PUNC">(</span><span class="NAME">match</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 44</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 26</span> 		while (source.length > 0) {
+<span class='line'> 27</span> 			if (match = source.match(pattern)) {
+<span class='line'> 28</span> 				result += source.slice(0, match.index);
+<span class='line'> 29</span> 				result += (replacement(match)) || '';
+<span class='line'> 30</span> 				source  = source.slice(match.index + match[0].length);
+<span class='line'> 31</span> 			} else {
+<span class='line'> 32</span> 				result += source, source = '';
+<span class='line'> 33</span> 			}
+<span class='line'> 34</span> 		}
+<span class='line'> 35</span> 		return result;
+<span class='line'> 36</span> 	}
+<span class='line'> 37</span> 	
+<span class='line'> 38</span> 	function _prepareReplacement(replacement) {
+<span class='line'> 39</span> 		if (typeof(replacement) === "function") {
+<span class='line'> 40</span> 			return replacement;
+<span class='line'> 41</span> 		}
+<span class='line'> 42</span> 		var template = new View(replacement);
+<span class='line'> 43</span> 		return function(match) { return template.evaluate(match); };
+<span class='line'> 44</span> 	}
 <span class='line'> 45</span> 
-<span class='line'> 46</span> </span><span class="WHIT">	</span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">_load</span><span class="PUNC">(</span><span class="NAME">data</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">views</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">templateName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">parentData</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">iterator</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 47</span> </span><span class="WHIT">		</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">_finalObj</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">data</span><span class="WHIT">
-<span class='line'> 48</span> </span><span class="WHIT">			</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">_parsed</span><span class="WHIT">
-<span class='line'> 49</span> </span><span class="WHIT">			</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">_template</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">views</span><span class="PUNC">[</span><span class="NAME">templateName</span><span class="PUNC">]</span><span class="WHIT">
-<span class='line'> 50</span> </span><span class="WHIT">			</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">_parentData</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">parentData</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 51</span> </span><span class="WHIT">			</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">_myData</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 52</span> </span><span class="WHIT">		</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 53</span> </span><span class="WHIT">		
-<span class='line'> 54</span> 		</span><span class="KEYW">if</span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="PUNC">(</span><span class="NAME">iterator</span><span class="PUNC">)</span><span class="PUNC">!==</span><span class="STRN">"undefined"</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="NAME">_finalObj.iterator</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">iterator</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 46</span> 	function _load(data, views, templateName, parentData, iterator){
+<span class='line'> 47</span> 		var _finalObj = data
+<span class='line'> 48</span> 			, _parsed
+<span class='line'> 49</span> 			, _template = views[templateName]
+<span class='line'> 50</span> 			, _parentData = parentData || {}
+<span class='line'> 51</span> 			, _myData = {}
+<span class='line'> 52</span> 		;
+<span class='line'> 53</span> 		
+<span class='line'> 54</span> 		if(typeof(iterator)!=="undefined") _finalObj.iterator = iterator;
 <span class='line'> 55</span> 
-<span class='line'> 56</span> </span><span class="WHIT">		</span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">_handleArray</span><span class="PUNC">(</span><span class="NAME">arry</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">newTemplateName</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 57</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">_returnList</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">""</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 58</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">views</span><span class="PUNC">[</span><span class="NAME">newTemplateName</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 59</span> </span><span class="WHIT">				</span><span class="KEYW">for</span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">=</span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">&lt;</span><span class="NAME">arry.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 60</span> </span><span class="WHIT">					</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">_returnObj</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">_load</span><span class="PUNC">(</span><span class="NAME">arry</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">views</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">newTemplateName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">arry</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">+</span><span class="NUMB">1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 61</span> </span><span class="WHIT">					</span><span class="NAME">_returnList</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">_returnObj</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 62</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 63</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">  
-<span class='line'> 64</span> 			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">_returnList</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 65</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 66</span> </span><span class="WHIT">		</span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">_finalObj</span><span class="WHIT"> </span><span class="KEYW">instanceof</span><span class="WHIT"> </span><span class="NAME">Array</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 67</span> </span><span class="WHIT">			</span><span class="NAME">_parsed</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">_handleArray</span><span class="PUNC">(</span><span class="NAME">_finalObj</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">templateName</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 68</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="PUNC">(</span><span class="NAME">_parsed</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 69</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 70</span> </span><span class="WHIT">			</span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">attrib</span><span class="WHIT"> </span><span class="KEYW">in</span><span class="WHIT"> </span><span class="NAME">_finalObj</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 71</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">_finalObj.hasOwnProperty</span><span class="PUNC">(</span><span class="NAME">attrib</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 72</span> </span><span class="WHIT">					</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">_finalObj</span><span class="PUNC">[</span><span class="NAME">attrib</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="KEYW">instanceof</span><span class="WHIT"> </span><span class="NAME">Array</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 73</span> </span><span class="WHIT">						</span><span class="NAME">_finalObj</span><span class="PUNC">[</span><span class="NAME">attrib</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">_handleArray</span><span class="PUNC">(</span><span class="NAME">_finalObj</span><span class="PUNC">[</span><span class="NAME">attrib</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">attrib</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 74</span> </span><span class="WHIT">					</span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">_finalObj</span><span class="PUNC">[</span><span class="NAME">attrib</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="KEYW">instanceof</span><span class="WHIT"> </span><span class="NAME">Object</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 75</span> </span><span class="WHIT">						</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">views</span><span class="PUNC">[</span><span class="NAME">attrib</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 76</span> </span><span class="WHIT">							</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">_returnObj</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">_load</span><span class="PUNC">(</span><span class="NAME">_finalObj</span><span class="PUNC">[</span><span class="NAME">attrib</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">views</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">attrib</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">_finalObj</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 77</span> </span><span class="WHIT">							</span><span class="NAME">_finalObj</span><span class="PUNC">[</span><span class="NAME">attrib</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">_returnObj</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 78</span> </span><span class="WHIT">						</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 79</span> </span><span class="WHIT">					</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 80</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 81</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 82</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">_template</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">_template.evaluate</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">_template.evaluate</span><span class="PUNC">(</span><span class="NAME">_finalObj</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">""</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 83</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 84</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 85</span> </span><span class="WHIT">	
-<span class='line'> 86</span> 	</span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">View</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">params</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 87</span> </span><span class="WHIT">		</span><span class="NAME">utils.Evint.apply</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="COMM">// mixin Event</span><span class="WHIT">
-<span class='line'> 88</span> </span><span class="WHIT">		</span><span class="NAME">utils.Laundry.apply</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="COMM">//mixin Laundry</span><span class="WHIT">
-<span class='line'> 89</span> </span><span class="WHIT">		</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">_this</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="WHIT">
-<span class='line'> 90</span> </span><span class="WHIT">			</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">_name</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">params</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="PUNC">(</span><span class="NAME">params.name</span><span class="PUNC">)</span><span class="PUNC">!==</span><span class="STRN">"undefined"</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">params.name</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">""</span><span class="WHIT">
-<span class='line'> 91</span> </span><span class="WHIT">			</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">_template</span><span class="WHIT">
-<span class='line'> 92</span> </span><span class="WHIT">			</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">_children</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="COMM">//false</span><span class="WHIT">
-<span class='line'> 93</span> </span><span class="WHIT">			</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">_childrenInitialzed</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="WHIT">
-<span class='line'> 94</span> </span><span class="WHIT">			</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">_node</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="WHIT">
-<span class='line'> 95</span> </span><span class="WHIT">			</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">_container</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">params</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">params.container</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">params.container</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="WHIT">
-<span class='line'> 96</span> </span><span class="WHIT">			</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">_useContainer</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">params</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">params.useContainer</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">params.useContainer</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="WHIT">
-<span class='line'> 97</span> </span><span class="WHIT">			</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">_staticContent</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">params</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">params.staticContent</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">params.staticContent</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="WHIT">
-<span class='line'> 98</span> </span><span class="WHIT">			</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">_tag</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">params</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">params.tag</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">params.tag</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">_ns.CONST.NODE_TYPE_DEFAULT</span><span class="WHIT">
-<span class='line'> 99</span> </span><span class="WHIT">			</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">_pattern</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">(</span><span class="NAME">params</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="PUNC">(</span><span class="NAME">params.pattern</span><span class="PUNC">)</span><span class="PUNC">!==</span><span class="STRN">"undefined"</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">params.pattern</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="REGX">/(^|.|\r|\n)(#\{(.*?)\})/</span><span class="WHIT">
-<span class='line'>100</span> </span><span class="WHIT">		</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>101</span> </span><span class="WHIT">		
-<span class='line'>102</span> 		</span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">_setTemplate</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">templateStr</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">name</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>103</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">_lookupname</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">name</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">_name</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="STRN">""</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">_name</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">_ns.CONST.TEMPLATE_DEFAULT</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>104</span> </span><span class="WHIT">			</span><span class="NAME">_template</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">templateStr.toString</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>105</span> </span><span class="WHIT">			</span><span class="NAME">_children</span><span class="PUNC">[</span><span class="NAME">_lookupname</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">_this</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>106</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>107</span> </span><span class="WHIT">		
-<span class='line'>108</span> 		</span><span class="NAME">_this.addChild</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">view</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>109</span> </span><span class="WHIT">			</span><span class="NAME">_children</span><span class="PUNC">[</span><span class="NAME">view.name</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">view</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>110</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>111</span> </span><span class="WHIT">		
-<span class='line'>112</span> 		</span><span class="NAME">_this.children</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>113</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">_childrenInitialzed</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">_children</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>114</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">_tplContainer</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">document.getElementById</span><span class="PUNC">(</span><span class="NAME">_this.Templates</span><span class="PUNC">)</span><span class="WHIT">
-<span class='line'>115</span> </span><span class="WHIT">				</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">_templateNodes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">_tplContainer</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">_tplContainer.getElementsByTagName</span><span class="PUNC">(</span><span class="NAME">_ns.CONST.TEMPLATE_NODE_TAG</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="WHIT"> 
-<span class='line'>116</span> 			</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>117</span> </span><span class="WHIT">		
-<span class='line'>118</span> 			</span><span class="KEYW">for</span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">=</span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">len</span><span class="PUNC">=</span><span class="NAME">_templateNodes.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">&lt;</span><span class="NAME">len</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>119</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">_tplNode</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">_templateNodes</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>120</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">_tplNode.className</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">_name</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>121</span> </span><span class="WHIT">					</span><span class="NAME">_setTemplate</span><span class="PUNC">(</span><span class="NAME">_tplNode.value</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>122</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>123</span> </span><span class="WHIT">					</span><span class="NAME">_this.addChild</span><span class="PUNC">(</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">View</span><span class="PUNC">(</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>124</span> </span><span class="WHIT">				  	</span><span class="NAME">template</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">_tplNode.value</span><span class="WHIT">
-<span class='line'>125</span> </span><span class="WHIT">				  </span><span class="PUNC">,</span><span class="WHIT">	</span><span class="NAME">name</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">_tplNode.className</span><span class="WHIT">
-<span class='line'>126</span> </span><span class="WHIT">				  </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>127</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>128</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">	
-<span class='line'>129</span> 			</span><span class="NAME">_childrenInitialzed</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>130</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">_children</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>131</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>132</span> </span><span class="WHIT">		
-<span class='line'>133</span> 		</span><span class="NAME">_this.setPattern</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">pattern</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>134</span> </span><span class="WHIT">			</span><span class="NAME">_pattern</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">pattern</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>135</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>136</span> </span><span class="WHIT">	
-<span class='line'>137</span> 		</span><span class="NAME">_this.evaluate</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">object</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>138</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="PUNC">(</span><span class="NAME">object</span><span class="PUNC">)</span><span class="PUNC">!==</span><span class="STRN">"undefined"</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="PUNC">(</span><span class="NAME">object.get</span><span class="PUNC">)</span><span class="PUNC">===</span><span class="STRN">"function"</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>139</span> </span><span class="WHIT">				</span><span class="NAME">object</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">object.get</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>140</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>141</span> </span><span class="WHIT">			
-<span class='line'>142</span> 			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">_output</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">_template</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>143</span> </span><span class="WHIT">			</span><span class="KEYW">for</span><span class="PUNC">(</span><span class="NAME">attrib</span><span class="WHIT"> </span><span class="KEYW">in</span><span class="WHIT"> </span><span class="NAME">object</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>144</span> </span><span class="WHIT">				</span><span class="NAME">_output</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">_output.replace</span><span class="PUNC">(</span><span class="NAME">eval</span><span class="PUNC">(</span><span class="STRN">"/#\{"</span><span class="PUNC">+</span><span class="NAME">attrib</span><span class="PUNC">+</span><span class="STRN">"\}/g"</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">object</span><span class="PUNC">[</span><span class="NAME">attrib</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>145</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>146</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">_output</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 56</span> 		function _handleArray(arry, newTemplateName){
+<span class='line'> 57</span> 			var _returnList = "";
+<span class='line'> 58</span> 			if (views[newTemplateName]) {
+<span class='line'> 59</span> 				for(var i=0; i&lt;arry.length; i++){
+<span class='line'> 60</span> 					var _returnObj = _load(arry[i], views, newTemplateName, arry, i+1);
+<span class='line'> 61</span> 					_returnList += _returnObj;
+<span class='line'> 62</span> 				}
+<span class='line'> 63</span> 			}  
+<span class='line'> 64</span> 			return _returnList;
+<span class='line'> 65</span> 		}
+<span class='line'> 66</span> 		if(_finalObj instanceof Array) {
+<span class='line'> 67</span> 			_parsed = _handleArray(_finalObj, templateName);
+<span class='line'> 68</span> 			return(_parsed);
+<span class='line'> 69</span> 		} else {
+<span class='line'> 70</span> 			for (var attrib in _finalObj) {
+<span class='line'> 71</span> 				if (_finalObj.hasOwnProperty(attrib)) {
+<span class='line'> 72</span> 					if (_finalObj[attrib] instanceof Array) {
+<span class='line'> 73</span> 						_finalObj[attrib] = _handleArray(_finalObj[attrib], attrib);
+<span class='line'> 74</span> 					} else if (_finalObj[attrib] instanceof Object) {
+<span class='line'> 75</span> 						if (views[attrib]) {
+<span class='line'> 76</span> 							var _returnObj = _load(_finalObj[attrib], views, attrib, _finalObj, null);
+<span class='line'> 77</span> 							_finalObj[attrib] = _returnObj;
+<span class='line'> 78</span> 						}
+<span class='line'> 79</span> 					}
+<span class='line'> 80</span> 				}
+<span class='line'> 81</span> 			}
+<span class='line'> 82</span> 			return (_template && _template.evaluate) ? _template.evaluate(_finalObj) : "";
+<span class='line'> 83</span> 		}
+<span class='line'> 84</span> 	}
+<span class='line'> 85</span> 	
+<span class='line'> 86</span> 	function View( params ) {
+<span class='line'> 87</span> 		utils.Evint.apply(this); // mixin Event
+<span class='line'> 88</span> 		utils.Laundry.apply(this); //mixin Laundry
+<span class='line'> 89</span> 		var _this = this
+<span class='line'> 90</span> 			, _name = (params && (typeof(params.name)!=="undefined")) ? params.name : ""
+<span class='line'> 91</span> 			, _template
+<span class='line'> 92</span> 			, _children = {}//false
+<span class='line'> 93</span> 			, _childrenInitialzed = false
+<span class='line'> 94</span> 			, _node = false
+<span class='line'> 95</span> 			, _container = (params && params.container) ? params.container : false
+<span class='line'> 96</span> 			, _useContainer = (params && params.useContainer) ? params.useContainer : false
+<span class='line'> 97</span> 			, _staticContent = (params && params.staticContent) ? params.staticContent : false
+<span class='line'> 98</span> 			, _tag = (params && params.tag) ? params.tag : _ns.CONST.NODE_TYPE_DEFAULT
+<span class='line'> 99</span> 			, _pattern = ((params) && (typeof(params.pattern)!=="undefined")) ? params.pattern : /(^|.|\r|\n)(#\{(.*?)\})/
+<span class='line'>100</span> 		;
+<span class='line'>101</span> 		
+<span class='line'>102</span> 		function _setTemplate (templateStr, name) {
+<span class='line'>103</span> 			var _lookupname = name || (_name != "") ? _name : _ns.CONST.VIEW_DEFAULT;
+<span class='line'>104</span> 			_template = templateStr.toString();
+<span class='line'>105</span> 			_children[_lookupname] = _this;
+<span class='line'>106</span> 		};
+<span class='line'>107</span> 		
+<span class='line'>108</span> 		_this.addChild = function (view) {
+<span class='line'>109</span> 			_children[view.name()] = view;
+<span class='line'>110</span> 		};
+<span class='line'>111</span> 		
+<span class='line'>112</span> 		_this.children = function(){
+<span class='line'>113</span> 			if(_childrenInitialzed) return _children;
+<span class='line'>114</span> 			var _tplContainer = document.getElementById(_this.Templates)
+<span class='line'>115</span> 				, _templateNodes = (_tplContainer) ? _tplContainer.getElementsByTagName(_ns.CONST.VIEW_NODE_TAG) : [] 
+<span class='line'>116</span> 			;
+<span class='line'>117</span> 		
+<span class='line'>118</span> 			for(var i=0, len=_templateNodes.length; i&lt;len; i++){
+<span class='line'>119</span> 				var _tplNode = _templateNodes[i];
+<span class='line'>120</span> 				if(_tplNode.className == _name){
+<span class='line'>121</span> 					_setTemplate(_tplNode.value);
+<span class='line'>122</span> 				} else {
+<span class='line'>123</span> 					_this.addChild(new View({
+<span class='line'>124</span> 				  	template: _tplNode.value
+<span class='line'>125</span> 				  ,	name: _tplNode.className
+<span class='line'>126</span> 				  }));
+<span class='line'>127</span> 				}
+<span class='line'>128</span> 			}	
+<span class='line'>129</span> 			_childrenInitialzed = true;
+<span class='line'>130</span> 			return _children;
+<span class='line'>131</span> 		};
+<span class='line'>132</span> 		
+<span class='line'>133</span> 		_this.setPattern = function (pattern) {
+<span class='line'>134</span> 			_pattern = pattern;
+<span class='line'>135</span> 		};
+<span class='line'>136</span> 	
+<span class='line'>137</span> 		_this.evaluate = function(object) {
+<span class='line'>138</span> 			if ((typeof(object)!=="undefined") && (typeof(object.get)==="function")) {
+<span class='line'>139</span> 				object = object.get();
+<span class='line'>140</span> 			}
+<span class='line'>141</span> 			
+<span class='line'>142</span> 			var _output = _template;
+<span class='line'>143</span> 			for(attrib in object){
+<span class='line'>144</span> 				_output = _output.replace(eval("/#\{"+attrib+"\}/g"), object[attrib]);
+<span class='line'>145</span> 			}
+<span class='line'>146</span> 			return _output;
 <span class='line'>147</span> 
-<span class='line'>148</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">_gsub</span><span class="PUNC">(</span><span class="NAME">_template</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">_pattern</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">match</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>149</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">object</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="STRN">''</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>148</span> 			return _gsub(_template, _pattern, function(match) {
+<span class='line'>149</span> 				if (object == null) return '';
 <span class='line'>150</span> 
-<span class='line'>151</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">before</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">match</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="STRN">''</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>152</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">before</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="STRN">'\\'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">match</span><span class="PUNC">[</span><span class="NUMB">2</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>151</span> 				var before = match[1] || '';
+<span class='line'>152</span> 				if (before == '\\') return match[2];
 <span class='line'>153</span> 
-<span class='line'>154</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ctx</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">object</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">expr</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">match</span><span class="PUNC">[</span><span class="NUMB">3</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>155</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">pattern</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="REGX">/^([^.[]+|\[((?:.*?[^\\])?)\])(\.|\[|$)/</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>156</span> </span><span class="WHIT">				</span><span class="NAME">match</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">pattern.exec</span><span class="PUNC">(</span><span class="NAME">expr</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>157</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">match</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">before</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>154</span> 				var ctx = object, expr = match[3];
+<span class='line'>155</span> 				var pattern = /^([^.[]+|\[((?:.*?[^\\])?)\])(\.|\[|$)/;
+<span class='line'>156</span> 				match = pattern.exec(expr);
+<span class='line'>157</span> 				if (match == null) return before;
 <span class='line'>158</span> 
-<span class='line'>159</span> </span><span class="WHIT">				</span><span class="KEYW">while</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">match</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>160</span> </span><span class="WHIT">					</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">comp</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">match</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">indexOf</span><span class="PUNC">(</span><span class="STRN">'['</span><span class="PUNC">)</span><span class="PUNC">===</span><span class="NUMB">0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">_gsub</span><span class="PUNC">(</span><span class="NAME">match</span><span class="PUNC">[</span><span class="NUMB">2</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'\\\\]'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">']'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">match</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>161</span> </span><span class="WHIT">					</span><span class="NAME">ctx</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">ctx</span><span class="PUNC">[</span><span class="NAME">comp</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>162</span> </span><span class="WHIT">					</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">null</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">ctx</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="STRN">''</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">match</span><span class="PUNC">[</span><span class="NUMB">3</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="KEYW">break</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>163</span> </span><span class="WHIT">					</span><span class="NAME">expr</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">expr.substring</span><span class="PUNC">(</span><span class="STRN">'['</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">match</span><span class="PUNC">[</span><span class="NUMB">3</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">match</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">length</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">match</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">length</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>164</span> </span><span class="WHIT">					</span><span class="NAME">match</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">pattern.exec</span><span class="PUNC">(</span><span class="NAME">expr</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>165</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>166</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">_ctx</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">ctx</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="STRN">''</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>167</span> </span><span class="WHIT">				</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">before</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">_ctx</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>168</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>169</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>170</span> </span><span class="WHIT">		
-<span class='line'>171</span> 		</span><span class="NAME">_this.node</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>172</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">_node</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>173</span> </span><span class="WHIT">				</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">_node</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>174</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>175</span> </span><span class="WHIT">			</span><span class="NAME">_node</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">_useContainer</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">_this.container</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">_this.document</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">createElement</span><span class="PUNC">(</span><span class="NAME">_tag</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>176</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">_className</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">_this.Templates.replace</span><span class="PUNC">(</span><span class="REGX">/\./g</span><span class="PUNC">,</span><span class="STRN">"_"</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">toUpperCase</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">" "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">_ns.CONST.VIEW_CLASS</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>177</span> </span><span class="WHIT">			</span><span class="NAME">_node.className</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">_node.className</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="STRN">""</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">_className</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">_node.className</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">" "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">_className</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>178</span> </span><span class="WHIT">	  	</span><span class="NAME">_node.style.display</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">"none"</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>179</span> </span><span class="WHIT">	  	</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">_useContainer</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>180</span> </span><span class="WHIT">	  		</span><span class="NAME">_this.container</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">appendChild</span><span class="PUNC">(</span><span class="NAME">_node</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>181</span> </span><span class="WHIT">	  	</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>182</span> </span><span class="WHIT">			</span><span class="NAME">utils.sizzle.call</span><span class="PUNC">(</span><span class="NAME">_node</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="COMM">//Provide selector capacity</span><span class="WHIT">
-<span class='line'>183</span> </span><span class="WHIT">		  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">_node</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>184</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>185</span> </span><span class="WHIT">		
-<span class='line'>186</span> 		</span><span class="NAME">_this.refresh</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">model</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>187</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">_data</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">model</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>188</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">_staticContent</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>189</span> </span><span class="WHIT">				</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="PUNC">(</span><span class="NAME">model</span><span class="PUNC">)</span><span class="PUNC">!==</span><span class="STRN">"undefined"</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="PUNC">(</span><span class="NAME">model.get</span><span class="PUNC">)</span><span class="PUNC">===</span><span class="STRN">"function"</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> 
-<span class='line'>190</span> 					</span><span class="NAME">_data</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">model.get</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>191</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>192</span> </span><span class="WHIT">		  	</span><span class="NAME">_this.node</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">innerHTML</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">_load</span><span class="PUNC">(</span><span class="NAME">_data</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">_this.children</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">_ns.CONST.TEMPLATE_DEFAULT</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>193</span> </span><span class="WHIT">		  	
-<span class='line'>194</span> 		  	</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">_imagesToLoad</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">_this.node</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">select</span><span class="PUNC">(</span><span class="STRN">"img."</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">_ns.CONST.IMAGE_LOADER_CLASS</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>195</span> </span><span class="WHIT">		  	</span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">len</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">_imagesToLoad.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">len</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>196</span> </span><span class="WHIT">		  		</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">utils.imageLoader</span><span class="PUNC">(</span><span class="NAME">_imagesToLoad</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>197</span> </span><span class="WHIT">		  	</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>198</span> </span><span class="WHIT">		  </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>199</span> </span><span class="WHIT">			</span><span class="NAME">_this.isClean</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>200</span> </span><span class="WHIT">			
-<span class='line'>201</span> 			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>202</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>203</span> </span><span class="WHIT">		
-<span class='line'>204</span> 		</span><span class="NAME">_this.container</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">container</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>205</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">_container</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>206</span> </span><span class="WHIT">				</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">_container</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>207</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="KEYW">else</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>208</span> </span><span class="WHIT">				</span><span class="NAME">_container</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">container</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">_this.document</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">body</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>209</span> </span><span class="WHIT">				</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">_container</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>210</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>211</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>212</span> </span><span class="WHIT">		
-<span class='line'>213</span> 		</span><span class="NAME">_this.document</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>214</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">document</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>215</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>216</span> </span><span class="WHIT">		
-<span class='line'>217</span> 		</span><span class="NAME">_this.name</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">str</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>218</span> </span><span class="WHIT">			</span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">_name</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="STRN">""</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT"> </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">_name</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="COMM">//set once - can't be overwritten</span><span class="WHIT">
-<span class='line'>219</span> </span><span class="WHIT">			</span><span class="NAME">_name</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">str</span><span class="PUNC">;</span><span class="WHIT"> 
-<span class='line'>220</span> 		</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>221</span> </span><span class="WHIT">		
-<span class='line'>222</span> 		</span><span class="NAME">_this.gsub</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">_gsub</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>223</span> </span><span class="WHIT">		
-<span class='line'>224</span> 		</span><span class="NAME">_this.Templates</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">_ns.CONST.TEMPLATES_DEFAULT</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="COMM">//Should be overridden in most cases</span><span class="WHIT">
-<span class='line'>225</span> </span><span class="WHIT">		
-<span class='line'>226</span> 		</span><span class="COMM">/* init */</span><span class="WHIT">
-<span class='line'>227</span> </span><span class="WHIT">		</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">(</span><span class="NAME">params</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="PUNC">(</span><span class="NAME">params.template</span><span class="PUNC">)</span><span class="PUNC">!==</span><span class="STRN">"undefined"</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>228</span> </span><span class="WHIT">			</span><span class="NAME">_setTemplate</span><span class="PUNC">(</span><span class="NAME">params.template</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>229</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>230</span> </span><span class="WHIT">		
-<span class='line'>231</span> 		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">_this</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>232</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>233</span> </span><span class="WHIT">	
-<span class='line'>234</span> 	</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">View</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>235</span> </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>236</span> </span></pre></body></html>
+<span class='line'>159</span> 				while (match != null) {
+<span class='line'>160</span> 					var comp = (match[1].indexOf('[')===0) ? _gsub(match[2], '\\\\]', ']') : match[1];
+<span class='line'>161</span> 					ctx = ctx[comp];
+<span class='line'>162</span> 					if (null == ctx || '' == match[3]) break;
+<span class='line'>163</span> 					expr = expr.substring('[' == match[3] ? match[1].length : match[0].length);
+<span class='line'>164</span> 					match = pattern.exec(expr);
+<span class='line'>165</span> 				}
+<span class='line'>166</span> 				var _ctx = ctx || '';
+<span class='line'>167</span> 				return before + _ctx;
+<span class='line'>168</span> 			});
+<span class='line'>169</span> 		};
+<span class='line'>170</span> 		
+<span class='line'>171</span> 		_this.node = function () {
+<span class='line'>172</span> 			if(_node){
+<span class='line'>173</span> 				return _node;
+<span class='line'>174</span> 			}
+<span class='line'>175</span> 			_node = (_useContainer) ? _this.container() : _this.document().createElement(_tag);
+<span class='line'>176</span> 			var _className = _this.Templates.replace(/\./g,"_").toUpperCase() + " " + _ns.CONST.VIEW_CLASS;
+<span class='line'>177</span> 			_node.className = (_node.className == "") ? _className : _node.className + " " + _className;
+<span class='line'>178</span> 	  	_node.style.display = "none";
+<span class='line'>179</span> 	  	if (!_useContainer) {
+<span class='line'>180</span> 	  		_this.container().appendChild(_node);
+<span class='line'>181</span> 	  	}
+<span class='line'>182</span> 			utils.sizzle.call(_node); //Provide selector capacity
+<span class='line'>183</span> 		  return _node;
+<span class='line'>184</span> 		};
+<span class='line'>185</span> 		
+<span class='line'>186</span> 		_this.refresh = function(model) {
+<span class='line'>187</span> 			var _data = model;
+<span class='line'>188</span> 			if (!_staticContent) {
+<span class='line'>189</span> 				if ((typeof(model)!=="undefined") && (typeof(model.get)==="function")) { 
+<span class='line'>190</span> 					_data = model.get();
+<span class='line'>191</span> 				}
+<span class='line'>192</span> 		  	_this.node().innerHTML = _load(_data, _this.children(), _ns.CONST.VIEW_DEFAULT);
+<span class='line'>193</span> 		  	
+<span class='line'>194</span> 		  	var _imagesToLoad = _this.node().select("img." + _ns.CONST.IMAGE_LOADER_CLASS);
+<span class='line'>195</span> 		  	for (var i = 0, len = _imagesToLoad.length; i &lt; len; i++) {
+<span class='line'>196</span> 		  		new utils.imageLoader(_imagesToLoad[i]);
+<span class='line'>197</span> 		  	}
+<span class='line'>198</span> 		  }
+<span class='line'>199</span> 			_this.isClean();
+<span class='line'>200</span> 			
+<span class='line'>201</span> 			return true;
+<span class='line'>202</span> 		};
+<span class='line'>203</span> 		
+<span class='line'>204</span> 		_this.container = function(container){
+<span class='line'>205</span> 			if(_container){
+<span class='line'>206</span> 				return _container;
+<span class='line'>207</span> 			}else{
+<span class='line'>208</span> 				_container = container || _this.document().body;
+<span class='line'>209</span> 				return _container;
+<span class='line'>210</span> 			}
+<span class='line'>211</span> 		};
+<span class='line'>212</span> 		
+<span class='line'>213</span> 		_this.document = function(){
+<span class='line'>214</span> 			return document;
+<span class='line'>215</span> 		};
+<span class='line'>216</span> 		
+<span class='line'>217</span> 		_this.name = function(str){
+<span class='line'>218</span> 			if(_name != ""){ return _name; } //set once - can't be overwritten
+<span class='line'>219</span> 			_name = str; 
+<span class='line'>220</span> 		};
+<span class='line'>221</span> 		
+<span class='line'>222</span> 		_this.gsub = _gsub;
+<span class='line'>223</span> 		
+<span class='line'>224</span> 		_this.Templates = _ns.CONST.VIEWS_DEFAULT; //Should be overridden in most cases
+<span class='line'>225</span> 		
+<span class='line'>226</span> 		/* init */</span><span class="WHIT">
+<span class='line'>227</span> </span><span class="COMM">/*		if ((params) && (typeof(params.template)!=="undefined")) {
+<span class='line'>228</span> 			_setTemplate(params.template);
+<span class='line'>229</span> 		}
+<span class='line'>230</span> 		
+<span class='line'>231</span> 		return _this;
+<span class='line'>232</span> 	}
+<span class='line'>233</span> 	
+<span class='line'>234</span> 	return View;
+<span class='line'>235</span> })();
+<span class='line'>236</span> */</span></pre></body></html>

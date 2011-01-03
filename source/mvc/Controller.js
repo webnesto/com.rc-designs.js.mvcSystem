@@ -4,6 +4,14 @@
  * 
  * @author ernesto
  * @date 11/18/2009
+ * 
+ * 
+ * @requires utils.Evint
+ * @requires utils.Array
+ * @requires utils.Laundry
+ * @requires utils.imageLoader
+ * @requires utils.sizzle
+ * 
  */
 
 /**
@@ -21,14 +29,183 @@ ns.Controller = (function () {
 		, _instances = 0
 	;
 	
+	var Template = (function () {
+		function _gsub(str, pattern, replacement) {
+			var result = ''
+				, source = str
+				, match
+			;
+			replacement = _prepareReplacement(replacement);
+	
+			while (source.length > 0) {
+				if (match = source.match(pattern)) {
+					result += source.slice(0, match.index);
+					result += (replacement(match)) || '';
+					source  = source.slice(match.index + match[0].length);
+				} else {
+					result += source, source = '';
+				}
+			}
+			return result;
+		}
+		
+		function _prepareReplacement(replacement) {
+			if (typeof(replacement) === "function") {
+				return replacement;
+			}
+			var template = new View(replacement);
+			return function(match) { return template.evaluate(match); };
+		}
+	
+		function _load(data, views, templateName, parentData, iterator){
+			var _finalObj = data
+				, _parsed
+				, _template = views[templateName]
+				, _parentData = parentData || {}
+				, _myData = {}
+			;
+			
+			if(typeof(iterator)!=="undefined") _finalObj.iterator = iterator;
+	
+			function _handleArray(arry, newTemplateName){
+				var _returnList = "";
+				if (views[newTemplateName]) {
+					for(var i=0; i<arry.length; i++){
+						var _returnObj = _load(arry[i], views, newTemplateName, arry, i+1);
+						_returnList += _returnObj;
+					}
+				}  
+				return _returnList;
+			}
+			if(_finalObj instanceof Array) {
+				_parsed = _handleArray(_finalObj, templateName);
+				return(_parsed);
+			} else {
+				for (var attrib in _finalObj) {
+					if (_finalObj.hasOwnProperty(attrib)) {
+						if (_finalObj[attrib] instanceof Array) {
+							_finalObj[attrib] = _handleArray(_finalObj[attrib], attrib);
+						} else if (_finalObj[attrib] instanceof Object) {
+							if (views[attrib]) {
+								var _returnObj = _load(_finalObj[attrib], views, attrib, _finalObj, null);
+								_finalObj[attrib] = _returnObj;
+							}
+						}
+					}
+				}
+				return (_template && _template.evaluate) ? _template.evaluate(_finalObj) : "";
+			}
+		}
+		
+		function _Template(params) {
+			var 
+				_this = this
+			, _view = 		(params && (typeof(params.view)!=="undefined")) ? params.view : ""
+			, _name = 		(params && (typeof(params.name)!=="undefined")) ? params.name : ""
+			,	_pattern = 	(params && (typeof(params.pattern)!=="undefined")) ? params.pattern : /(^|.|\r|\n)(#\{(.*?)\})/
+			, _template
+			, _children = {}//false
+			, _childrenInitialzed = false
+			;
+			
+			function _setTemplate (templateStr, name) {
+				var _lookupname = name || (_name != "") ? _name : _ns.CONST.VIEW_DEFAULT;
+				_template = templateStr.toString();
+				_children[_lookupname] = _this;
+			};
+			
+			_this.addChild = function (view) {
+				_children[view.name()] = view;
+			};
+			
+			_this.children = function(){
+				if(_childrenInitialzed) return _children;
+				var _tplContainer = document.getElementById(_view)
+					, _templateNodes = (_tplContainer) ? _tplContainer.getElementsByTagName(_ns.CONST.VIEW_NODE_TAG) : [] 
+				;
+			
+				for(var i=0, len=_templateNodes.length; i<len; i++){
+					var _tplNode = _templateNodes[i];
+					if(_tplNode.className == _name){
+						_setTemplate(_tplNode.value);
+					} else {
+						_this.addChild(new _Template({
+					  	template: _tplNode.value
+					  ,	name: _tplNode.className
+					  }));
+					}
+				}	
+				_childrenInitialzed = true;
+				return _children;
+			};
+			
+			_this.setPattern = function (pattern) {
+				_pattern = pattern;
+			};
+		
+			_this.evaluate = function(object) {
+				if ((typeof(object)!=="undefined") && (typeof(object.get)==="function")) {
+					object = object.get();
+				}
+				
+				var _output = _template;
+				for(attrib in object){
+					_output = _output.replace(eval("/#\{"+attrib+"\}/g"), object[attrib]);
+				}
+				return _output;
+	
+				return _gsub(_template, _pattern, function(match) {
+					if (object == null) return '';
+	
+					var before = match[1] || '';
+					if (before == '\\') return match[2];
+	
+					var ctx = object, expr = match[3];
+					var pattern = /^([^.[]+|\[((?:.*?[^\\])?)\])(\.|\[|$)/;
+					match = pattern.exec(expr);
+					if (match == null) return before;
+	
+					while (match != null) {
+						var comp = (match[1].indexOf('[')===0) ? _gsub(match[2], '\\\\]', ']') : match[1];
+						ctx = ctx[comp];
+						if (null == ctx || '' == match[3]) break;
+						expr = expr.substring('[' == match[3] ? match[1].length : match[0].length);
+						match = pattern.exec(expr);
+					}
+					var _ctx = ctx || '';
+					return before + _ctx;
+				});
+			};
+			
+			_this.load = function (data) {
+				return _load(data, _this.children(), _ns.CONST.VIEW_DEFAULT);
+			};
+			
+			_this.name = function(str){
+				if(_name != ""){ return _name; } //set once - can't be overwritten
+				_name = str; 
+			};
+			
+			/* init */
+			if ((params) && (typeof(params.template)!=="undefined")) {
+				_setTemplate(params.template);
+			}
+			
+			return _this;
+		}
+		
+		return _Template;
+		
+	})();
+	
 	/**#@-*/ //END CLASS PRIVATE
 	function Controller(params) {
+		
 		var _this = this
 			, _instance = _instances++
 			, _parent = (params && params.parent) ? params.parent : false
 			, _children = (params && params.children) ?  params.children : []
 			//, _manager = (params) ? params.manager || _ns.manager : _ns.manager
-			, _view = false
 			, _model = false
 			, _container = (params && params.container) ? params.container : false
 			, _useContainer = (params && params.useContainer) ? params.useContainer : false
@@ -36,17 +213,36 @@ ns.Controller = (function () {
 			, _tag = (params && params.tag) ? params.tag : _ns.CONST.NODE_TYPE_DEFAULT
 			, _prepped = false
 			, _visible = false
+			
+			
+			, _template = false
+			, _node = false
+			, _container = (params && params.container) ? params.container : false
+			, _pattern = ((params) && (typeof(params.pattern)!=="undefined")) ? params.pattern : /(^|.|\r|\n)(#\{(.*?)\})/
 		;
-		utils.Evint.call(this, _parent); // mixin Event
+		utils.Evint.call(_this, _parent); // mixin Event
+		utils.Laundry.apply(_this); //mixin Laundry
+		_this.constructor = Controller;
 		
 		function _monitorModel(){
-			if (_model && _view) {
+			//if (_model && _view) {
 	  		_model.subscribe(
 					_ns.CONST.EVENTS.CHANGE
-				, _this.view().isDirty
+				, _this.isDirty
 				, utils.Evint.CONST.PRIORITY_FIRST
 				); //Note this view's need for washing since the data's gotten dirty (changed)
+			//}
+		}
+		
+		function _getTemplate() {
+			if(_template){
+				return _template;
 			}
+			_template = new Template({
+	  		view: _this.View
+			, pattern: _pattern
+	  	});
+			return _template;
 		}
 		
 		_this.idee = function(){
@@ -109,20 +305,8 @@ ns.Controller = (function () {
 				//#ifdef debug
 				_logger("Controller.prepare() - creating node");
 				//#endif
-				/*
-		  	var _newNode = (_useContainer) ? _this.container() : _this.document().createElement(_tag)
-					, _className = _this.view().Templates.replace(/\./g,"_").toUpperCase() + " " + _ns.CONST.VIEW_CLASS //TODO: replace "view" with other exposed constant.
-				;
-				_newNode.className = (_newNode.className == "") ? _className : _newNode.className + " " + _className;
-		  	_newNode.style.display = "none";
-		  	if (!_useContainer) {
-					_this.container().appendChild(_newNode);
-				}
-		  	_this.node = function(){
-					utils.sizzle.call(_newNode); //Provide selector capacity
-		  		return _newNode;
-		  	};*/
-				_this.node = _this.view().node;
+				
+				_this.node(); //call node to initialize it
 				
 		  	_this.setPrepped(true);
 		  	
@@ -145,7 +329,20 @@ ns.Controller = (function () {
 			//TODO: Is this required?				Event.stopObserving(element);
 			//});
 			
-			_this.view().refresh(_this.model());
+			var _data = _this.model();
+			if (!_staticContent) {
+				if ((typeof(_this.model())!=="undefined") && (typeof(_this.model().get)==="function")) { 
+					_data = _this.model().get();
+				}
+		  	_this.node().innerHTML = _getTemplate().load(_data);//, _this.children(), _ns.CONST.VIEW_DEFAULT);
+		  	
+		  	var _imagesToLoad = _this.node().select("img." + _ns.CONST.IMAGE_LOADER_CLASS);
+		  	for (var i = 0, len = _imagesToLoad.length; i < len; i++) {
+		  		new utils.imageLoader(_imagesToLoad[i]);
+		  	}
+		  }
+			
+			_this.isClean();
 			
 			_this.fire(_ns.CONST.EVENTS.REFRESH);
 			
@@ -170,7 +367,7 @@ ns.Controller = (function () {
 		  	if (!_prepped) {
 					_this.prepare();
 				}
-		  	if (_this.view().needWashing()) {
+		  	if (_this.needWashing()) {
 		  		_this.refresh();
 		  	}
 		  	_this.node().style.display = "";
@@ -215,29 +412,6 @@ ns.Controller = (function () {
 			return _this;
 		};
 		
-		
-		
-		_this.view = function(view){
-			//#ifdef debug
-			//debug.trace();
-			_logger("Controller.view()" + (((!_view) && (view)) ? "set" : "get"), _this, _this.idee());
-			//#endif
-			if(_view){
-				return _view;
-			}else{
-				_view = view || new _this.View({
-					container: _container
-				, useContainer: _useContainer
-				, staticContent: _staticContent
-				, tag: _tag	
-				});
-				_monitorModel();
-				return _view;
-			}
-		};
-	
-		_this.node = function () {}; //Overridden by prepare maps to view().node()
-		
 		_this.model = function(model){
 	  	if (_model && (typeof(model)=="undefined")) {
 	  		return _model;
@@ -252,14 +426,36 @@ ns.Controller = (function () {
 				}
 	  	}
 		};
-				
-				
-				
+		
+		_this.node = function () {
+			if(_node){
+				return _node;
+			}
+			_node = (_useContainer) ? _this.container() : _this.document().createElement(_tag);
+			var _className = _this.View.replace(/\./g,"_").toUpperCase() + " " + _ns.CONST.VIEW_CLASS;
+			_node.className = (_node.className == "") ? _className : _node.className + " " + _className;
+	  	_node.style.display = "none";
+	  	if (!_useContainer) {
+	  		_this.container().appendChild(_node);
+	  	}
+			utils.sizzle.call(_node); //Provide selector capacity
+		  return _node;
+		};
+		
+		_this.container = function(container){
+			if(_container){
+				return _container;
+			}else{
+				_container = container || _this.document().body;
+				return _container;
+			}
+		};
+		
 		_this.Model = _ns.Model; //Possible to be overwritten (Not required)
 		
-		_this.View = _ns.View; //Expected to be overwritten (Currently required... may be modified)
+		_this.View = _ns.CONST.VIEWS_DEFAULT; //Should be overridden in most cases
 		
-		
+		/* init */
 		if(params && params.model){
 			_this.model(params.model);
 		}
@@ -267,9 +463,13 @@ ns.Controller = (function () {
 		return _this;
 	}
 	
+	Controller.prototype.document = function(){
+		return document;
+	};
+	
 	Controller.getInstances = function() {
 		return _instances;	
-	}
+	};
 	
 	return Controller;
 })();
