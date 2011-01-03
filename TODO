@@ -1,0 +1,9 @@
+-Improve/Correct builder -- read/create unified html template files
+-Improve/Correct builder -- compression?
+-Improve/Correct builder -- handle files before folders (ensures namespace integrity)
+-Documentation
+	-Flowchart controller/model/view(template) lifecycle
+	-Best practices
+-Consider default registration with default manager (would need to be created)
+-Build example showing semantic/seo-optimized code turned into dynamic layout
+-Build example of separation of DAL and view Models (use Gallery example)

@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>mvc tester</title>
+</head>
+<body>
+	
+	<script type="text/javascript" src="/js/includes.js"></script>
+	
+	<link rel="stylesheet" href="dev/tester.css" />
+	<script type="text/javascript" src="/dev/tester.js"></script>
+	
+	<script type="text/javascript" src="js/bin/tests.js"></script>
+	
+	<script>
+	tests.testModel("", mvc.Model); //This line can be duplicated for any/all Model subclasses to ensure adherance to API
+	tests.testView("", mvc.View); //This line can be duplicated for any/all View subclasses to ensure adherance to API
+	tests.testController("", mvc.Controller); //This line can be duplicated for any/all Controller subclasses to ensure adherance to API
+	tests.testManager("", mvc.Manager); //This line can be duplicated for any/all Manager subclasses to ensure adherance to API
+	
+	with(jasmine){		
+	  getEnv().addReporter(new TrivialReporter());
+	  getEnv().execute();
+	}
+	</script>
+	
+	
+</body>
+</html>
