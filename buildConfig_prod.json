@@ -1,0 +1,23 @@
+{
+	"_" : ""
+, "prod" : {													// Only used in production builds
+		"_" : ""
+	,	"keep" : [												// Variables for use in preprocessing
+			"_"
+//		,	"debug"													//	  This would ensure that all code enclosed in #ifdef debug -> #endif blocks will be included (unless innerblock disables)
+		]
+	, "compression" : "true"						// Whether or not to use compression
+	}
+,	"typeProps": {
+		"js" : {
+			"firsts": [
+				"=~^at_.js"
+			,	"CONST.js"
+			] 
+		,	"lasts": [
+				"version.js"
+			]
+		}
+	} 
+, "document" : "false"								// Whether or not to document
+}

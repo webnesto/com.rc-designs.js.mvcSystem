@@ -8,12 +8,19 @@
 	
 	<script type="text/javascript" src="/js/includes.js"></script>
 	
-	<link rel="stylesheet" href="dev/tester.css" />
+	<link rel="stylesheet" href="/dev/tester.css" />
 	<script type="text/javascript" src="/dev/tester.js"></script>
 	
-	<script type="text/javascript" src="js/bin/tests.js"></script>
+	<script type="text/javascript" src="/js/bin/tests.js"></script>
 	
 	<script>
+	var foo = new mvc.Model();
+	
+	foo.set(["I'm","an","array"]);
+	
+	var bar = new mvc.Model(["I'm","an","array"]);	
+		
+		
 	tests.testModel("", mvc.Model); //This line can be duplicated for any/all Model subclasses to ensure adherance to API
 	tests.testView("", mvc.View); //This line can be duplicated for any/all View subclasses to ensure adherance to API
 	tests.testController("", mvc.Controller); //This line can be duplicated for any/all Controller subclasses to ensure adherance to API

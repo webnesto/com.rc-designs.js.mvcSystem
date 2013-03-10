@@ -1,2 +1,2 @@
-
-var _debugger='<script type="text/javascript" src="/dev/debug.js"></sc'+'ript>';var debug={options:{error:true,debug:true,showAll:true}};document.write(_debugger);
+/* GENERATED FILE - DO NOT EDIT */
+document.write('<scr'+'ipt type="text/javascript" src="http://local.mvcsystem.dev/src/debug/debug.js"></scr'+'ipt>')

@@ -1,0 +1,20 @@
+{
+	"_": ""
+, "build": "dev" 										// "prod"build type - only valid values are "prod" and "dev"
+, "dev": {
+		"_": ""
+	,	"url": "http://local.mvcsystem.dev" 	// Prepended to all paths in dev build - No trailing slashes
+	}
+,	"typeProps": {
+		"js" : {
+			"firsts": [
+				"=~^at_"
+			,	"CONST.js"
+			] 
+		,	"lasts": [
+				"version.js"
+			]
+		}
+	} 
+, "document": "false"								// Whether or not to document
+}
